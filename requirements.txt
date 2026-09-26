@@ -1,0 +1,3 @@
+pyusb>=1.2      # USB access to the camera (needs libusb-1.0 installed on the system)
+Pillow>=10      # building from source (artwork/penguin assets, previews)
+pyserial>=3.5   # only for the Pico recovery tools in tools/recovery

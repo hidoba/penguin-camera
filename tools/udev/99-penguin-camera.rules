@@ -1,0 +1,5 @@
+# Let members of 'plugdev' talk to the camera without sudo.
+# Normal firmware USB mode (installer uses this):
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1908", ATTR{idProduct}=="3283", GROUP="plugdev", MODE="0660"
+# AX3295B ROM USB bootloader (seen briefly during 'penguin_flash.py restart'):
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="1908", ATTR{idProduct}=="3319", GROUP="plugdev", MODE="0660"

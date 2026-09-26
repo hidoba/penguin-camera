@@ -1,0 +1,39 @@
+{
+  "status": "splash screens (stock resources 64/65, replaced in place)",
+  "original_sha256": "e22557a4497a1199c9ecc3956b18a89ac70af800b674055513f3de91bfb8f224",
+  "orientation": "long axis along paper-feed; landscape rotated 90 degrees CCW",
+  "replacements": [
+    {
+      "source": "064_188dc6.jpg",
+      "source_sha256": "305dd7cae7df590068e7c1ecec90befc57640167cb60dd58156cab5309bc7a99",
+      "index": 64,
+      "output": "power-off-bye.jpg",
+      "bytes": 31554,
+      "slot_bytes": 32103,
+      "quality": 81,
+      "dimensions": [
+        320,
+        240
+      ],
+      "subsampling": 2,
+      "sha256": "eae454130a1b77b13eb7043ea0fca3ce30948e0415d35d7bd655bcba53b0576c",
+      "meaning": "shown when the camera switches off"
+    },
+    {
+      "source": "065_190b2d.jpg",
+      "source_sha256": "147deb54ed5a6b084322468b99f0d4ca1d8ae56752d1a20f246ce29f38689b91",
+      "index": 65,
+      "output": "power-on-hi.jpg",
+      "bytes": 28086,
+      "slot_bytes": 28433,
+      "quality": 75,
+      "dimensions": [
+        320,
+        240
+      ],
+      "subsampling": 2,
+      "sha256": "9fc215ac9fc57aee8ffcde64529e256690637127503d1b77466cb25e40c7879c",
+      "meaning": "shown when the camera switches on"
+    }
+  ]
+}
