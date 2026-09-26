@@ -7,7 +7,7 @@ pass the borrowed pointer to free(). Unknown/stale state refuses or latches.
 """
 import struct
 from live_preview_patch import Code,BIAS
-from build_gray_candidate import branch
+from or1k_subset import branch
 from responsive_effects_patch import WORK_IMAGE,META,BANKS
 
 ALLOC=0x2d800  # verified empty gap after menu status, before penguin reader
@@ -16,7 +16,7 @@ STATE=0x4e80  # active, raw pointer, attempts, status
 WORKSPACE_BYTES=76800
 # Update 32: the stock capture re-encodes at lower quality only above 0x14000 bytes,
 # so lend a larger contiguous range: preview bank 0 .. end of WORK_IMAGE. Nothing
-# else lives there (bank 1 ends 0x14580, gap to 0x15000 unused, Magic at 0x27c00),
+# else lives there (bank 1 ends 0x14580, gap to 0x15000 unused, Halftone 4x4 at 0x27c00),
 # and the preview (the only user) cannot run during the synchronous capture.
 LOAN_START=BANKS[0]
 LOAN_BYTES=WORK_IMAGE+WORKSPACE_BYTES-BANKS[0]

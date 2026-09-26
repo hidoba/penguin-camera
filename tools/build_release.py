@@ -19,12 +19,11 @@ The same sources always give the same image (the SHA-256 is printed).
 import argparse
 import hashlib
 import json
-import shutil
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from project_paths import ROOT, STOCK_FIRMWARE, ARTWORK, PRINT_PENGUINS, BOOT_ROM, FRAMES, PENGUINS
+from project_paths import STOCK_FIRMWARE, ARTWORK, PRINT_PENGUINS, BOOT_ROM, FRAMES, PENGUINS
 
 FLAGS = dict(usb_recovery=True, ram_autostart=True, penguin_corrections=True, regression_fixes=True,
              ui_cleanup=True, random_timing=True, preview_speed=True, effects_v5=True)

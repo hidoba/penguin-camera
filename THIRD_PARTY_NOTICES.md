@@ -1,6 +1,6 @@
 # Ditherista / libdither
 
-The Magic 4×4 45 matrix, its threshold convention, and the Error Diffusion 1D
+The Magic 4×4 45 matrix (called Halftone 4×4 in this project), its threshold convention, and the Error Diffusion 1D
 algorithm were adapted from Robert Kist's libdither, as used by Ditherista.
 
 - Ditherista commit: `24f1067f1af359e1a52fd9298f56300c4d181b66`

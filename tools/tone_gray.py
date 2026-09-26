@@ -23,12 +23,10 @@ import struct
 from pathlib import Path
 from live_preview_patch import Code
 
-ROOT = Path(__file__).resolve().parents[1]
 from project_paths import GRAY_MODEL as MODEL
 UNIT = 255*88
 TONE = 0xb380
 T_TABLE = 0xb800          # 256 x u16 (TV, 1/16 input units)
-BINV_TABLE = 0xba00       # unused since v2 (kept zero)
 COL_TABLE = 0xbc00        # 384 x s16 by buffer row (1/16 input units)
 MAX_CODE = T_TABLE-TONE
 S_INIT = 2*UNIT           # assumed load of the line before the first one

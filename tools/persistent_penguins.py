@@ -15,7 +15,7 @@ from responsive_effects_patch import KERNELS,SLICED,META,NAMES,ADAPTERS,PREVIEW_
 from live_preview_patch import control,CONTROLS,preview,START,TABLES
 from preview_labels import LABEL_CODE,LABELS
 from photo_print_policy import install_parts
-from ditherista_target import MAGIC,ONE_D,kernel as fast_kernel
+from ditherista_target import HALFTONE4,ONE_D,kernel as fast_kernel
 from ui_trace_patch import BIAS
 
 WORKER=EFFECTS_SIZE
@@ -31,13 +31,13 @@ def build(base,original,pack,ram_autostart=False,*,penguin_corrections=False,reg
         validate_clock(original)
     old,patches=effects_build(base,original);blob=bytearray(SIZE);blob[:len(old)]=old
     protected=(base,base+SIZE)
-    targets=tuple(base+off for off in (*KERNELS,MAGIC,ONE_D))
+    targets=tuple(base+off for off in (*KERNELS,HALFTONE4,ONE_D))
     code=transform(base,targets,base+PRINT_SCRATCH,SIZE,MAX_DIMENSION)
     blob[TRANSFORM:LUT]=b'\0'*(LUT-TRANSFORM);blob[TRANSFORM:TRANSFORM+len(code)]=code
     for off,code in ((DRAW,renderer(base,protected=protected,allocation_size=SIZE)),
                      (PORTRAIT,renderer(base,portrait=True,protected=protected,allocation_size=SIZE)),
                      (DISPLAY,display(base,protected=protected,allocation_size=SIZE)),
-                     (MAGIC,fast_kernel(base,False,MAX_DIMENSION,SIZE)),
+                     (HALFTONE4,fast_kernel(base,False,MAX_DIMENSION,SIZE)),
                      (ONE_D,fast_kernel(base,True,MAX_DIMENSION,SIZE))):
         blob[off:off+len(code)]=code
     blob[WORKER:]=worker_build(base+WORKER,pack,PACK_FLASH,base,base,SIZE,
@@ -57,7 +57,7 @@ def build(base,original,pack,ram_autostart=False,*,penguin_corrections=False,reg
         blob[off:off+0x180]=b'\0'*0x180;blob[off:off+len(code)]=code
     blob[LABELS+7*32:LABELS+8*32]=b'CRACKED EXPERIMENTAL'.ljust(32,b'\0')
     from capture_workspace import STATE as CAPTURE_WORKSPACE_STATE
-    code=preview(base,tuple(base+o for o in (*ADAPTERS,MAGIC,ONE_D)),
+    code=preview(base,tuple(base+o for o in (*ADAPTERS,HALFTONE4,ONE_D)),
                  base+PREVIEW_SCRATCH,base+LABEL_CODE,force_print=True,
                  dynamic_frames=True,allocation_size=SIZE,
                  busy_word=base+CAPTURE_WORKSPACE_STATE if regression_fixes else None)

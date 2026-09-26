@@ -2,7 +2,7 @@ import struct
 import unittest
 from random_penguin_ram import build,worker,STATE,EVENT,TABLE,BIAS,GUARD_NAMES
 from or1k_subset import CPU
-from menu_controller import STATUS,DISPLAY,ACTIVATE
+from menu_controller import DISPLAY, ACTIVATE
 
 BASE=0x02136c80
 MENU=0x02134e00

@@ -10,7 +10,6 @@ SPI CRC to test the actual rejection branch. Never accesses USB/hardware.
 import argparse
 import json
 from pathlib import Path
-import struct
 
 from or1k_subset import CPU
 import hashlib

@@ -7,13 +7,12 @@ freeing an untrusted pointer or repeating a potentially leaking operation.
 """
 import struct
 from live_preview_patch import Code,BIAS
-from build_gray_candidate import branch
+from or1k_subset import branch
 from menu_controller import ACTIVATE,DISPLAY,STATUS,SELECTION
 
 EVENT=0x800
 STATE=0xc00
 DEBOUNCE_WORD=48  # STATE+48: uptime at the end of the last print (update 32; diagnostic-only word before)
-STATE_BYTES=64
 TABLE=0xd00
 LUT=0xe00
 DATA=0x1000

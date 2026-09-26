@@ -7,11 +7,10 @@ TABLE, 15 = leave the pixel alone. Palette (stock resource 62, RGB565 + alpha):
 250 black, 242/241/246/240/2 grays 49/81/117/162/194, 251 white.
 The curve pictogram is plotted live from the selected curve's 256-entry LUT.
 """
-import math
 
 TABLE = (250, 242, 241, 246, 240, 2, 251) + (0,)*8 + (0,)     # nibble 15 = skip
 SKIP, BLACK, WHITE = 15, 0, 6
-SIZE, INNER, MARGIN = 24, 16, 4
+SIZE, INNER = 24, 16
 
 
 def frame():
@@ -105,23 +104,6 @@ TRI_UP_ART = (                     # 16x9, right edge over the picture: white, b
     "o##############o",
     "o##############o",
     "oooooooooooooooo")
-FRAME_ART = (                      # 16x16 inside the rounded square: a framed landscape
-    "................",
-    ".##############.",
-    ".#............#.",
-    ".#........##..#.",
-    ".#.......####.#.",
-    ".#........##..#.",
-    ".#............#.",
-    ".#.....#......#.",
-    ".#....###.....#.",
-    ".#...#####..#.#.",
-    ".#..###########.",
-    ".#.############.",
-    ".##############.",
-    ".#............#.",
-    ".##############.",
-    "................")
 UPDOWN_W, UPDOWN_H, TRI_W, TRI_H = 12, 16, 16, 9
 PAINTING_W = PAINTING_H = 28
 WAVY_FRAME_ART = (                 # 28x28 (update 29b): wavy picture frame, open centre
@@ -213,6 +195,3 @@ def curve_points(lut):
     return [(i, min(ys[i], ys[i-1] if i else ys[i]), max(ys[i], ys[i-1] if i else ys[i])) for i in range(INNER)]
 
 
-def ascii(px, w):
-    ch = {SKIP: ' ', 0: '.', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '#'}
-    return '\n'.join(''.join(ch[v] for v in px[i:i+w]) for i in range(0, len(px), w))

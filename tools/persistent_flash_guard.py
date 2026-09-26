@@ -8,7 +8,7 @@ import hashlib
 import struct
 from analyze_firmware import EXPECTED_SHA256,parse_resources
 from live_preview_patch import Code,BIAS
-from build_gray_candidate import branch
+from or1k_subset import branch
 from or1k_subset import signed
 
 SETTINGS=0x1d7000

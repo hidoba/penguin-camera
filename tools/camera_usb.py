@@ -16,7 +16,6 @@ import hashlib
 import json
 import os
 import struct
-import time
 from pathlib import Path
 
 import usb.core
@@ -24,10 +23,9 @@ import usb.util
 
 from or1k_subset import Assembler
 
-ROOT = Path(__file__).resolve().parents[1]
 BIAS = 0x02000000-0x2400                 # application RAM = flash offset + BIAS
 ORIGINAL_SHA = 'e22557a4497a1199c9ecc3956b18a89ac70af800b674055513f3de91bfb8f224'   # stock flash dump
-VID, PID, PID_ROM = 0x1908, 0x3283, 0x3319
+VID, PID = 0x1908, 0x3283
 CHUNK = 65536
 FLASH_SIZE = 4*1024*1024
 BEFORE, AFTER = b'\xa5'*64, b'\x5a'*64

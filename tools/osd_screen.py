@@ -403,7 +403,7 @@ def flip_wrapper(base, paint):
     layer 0, one of the two descriptor buffers: wait for the stock DMA canvas copy,
     paint, then l.j into the stock flip with r3/r4/r9 intact."""
     from osd_label import _descriptor_ok, FLIP_WRAP, FLIP_TARGET, MODE_WORD, DMA_WAIT
-    from build_gray_candidate import branch
+    from or1k_subset import branch
     a = Code(); imm = a.immediate; origin = base+FLIP_WRAP
     saved = (3, 4, 5, 9, 12, 13, 14)
     imm(0x27, 1, 1, -len(saved)*4)

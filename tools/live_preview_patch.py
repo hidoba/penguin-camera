@@ -6,9 +6,9 @@ Initial modes: Bayer8, Bayer4, threshold. No labels or printing integration yet.
 """
 import struct
 from or1k_subset import Assembler
-from build_gray_candidate import branch
+from or1k_subset import branch
 from ui_trace_patch import BIAS,build_filtered_dispatch
-from print_patch import BAYER
+BAYER = (0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5)   # 4x4 Bayer ordered-dither matrix
 
 START=0x4200
 TABLES=0x4800
@@ -20,7 +20,6 @@ SUBMIT=0x361c8
 DESCRIPTORS=((0x0208a640,0x02099e00),(0x0208a674,0x020b6000))
 PIXELS=320*240
 FRAME_BYTES=PIXELS*3//2
-NAMES=('Bayer 8x8','Bayer 4x4','Threshold')
 
 
 def bayer8():

@@ -4,23 +4,23 @@
   10 (HALFTONE 6X6).
 - Threshold (ID 2) and Stucki (ID 5) are skipped by previous/next; their code
   and table remain so no dispatch index moves.
-- Magic 4x4 45 uses a gamma-0.8 lifted threshold table (0 stays black).
+- Halftone 4x4 (libdither "Magic 4x4 45") uses a gamma-0.8 lifted threshold table (0 stays black).
 """
 from live_preview_patch import control, CONTROLS, preview, START, TABLES
 from combined_print_patch import transform, TRANSFORM
 from photo_print_policy import SHUTTER
 from date_stamp import stamp, font as stamp_font, STAMP, STAMP_FONT, SETTING, disable_stock_hook, disable_stock_flag_hook, disable_print_capture_flag_hooks
-from color_gray import orange, ORANGE, MAX_CODE as ORANGE_MAX, WEIGHTS
+from color_gray import orange, ORANGE, MAX_CODE as ORANGE_MAX
 import tone_gray
 from responsive_effects_patch import KERNELS, ADAPTERS, PREVIEW_SCRATCH, META, NAMES
 from persistent_effects_patch import PRINT_SCRATCH, MAX_DIMENSION
-from ditherista_target import MAGIC, ONE_D, MAGIC_TABLE
+from ditherista_target import HALFTONE4, ONE_D, HALFTONE4_TABLE
 from ditherista_tables import THRESHOLDS
-from preview_labels import overlay, LABEL_CODE, LABELS
-from osd_label import osd_label, SHORT_NAMES, flip_wrapper, flip_hook, FLIP_WRAP
+from preview_labels import LABEL_CODE, LABELS
+from osd_label import SHORT_NAMES, flip_hook, FLIP_WRAP
 from live_preview_patch import STATE as PREVIEW_STATE
 from capture_workspace import STATE as CAPTURE_WORKSPACE_STATE
-from effects_v5 import magic_thresholds, bayer8_thresholds, EDGE_THRESHOLD, MAGIC_GAMMA, MAGIC_LOWEST
+from effects_v5 import halftone4_thresholds, bayer8_thresholds, HALFTONE4_GAMMA, HALFTONE4_LOWEST
 from effects_v5_target import (halftone_kernel, halftone_table, HALFTONE, HALFTONE_TABLE, REGION,
                                HALFTONE5, HALFTONE5_TABLE, HALFTONE5_END, HALFTONE5_TAPS)
 import idle_reset
@@ -29,14 +29,14 @@ import osd_screen
 
 V5_NAMES = (*NAMES, 'Halftone 5x5', 'Halftone 6x6')
 V5_LABELS = {9: b'HALFTONE 5X5', 10: b'HALFTONE 6X6'}   # cosine clustered-dot screens
-EXCLUDED = (2, 5, 7)   # update 35: Magic 4x4 (HALFTONE 4X4) replaced by HALFTONE 5X5 (mode 9)
+EXCLUDED = (2, 5, 7)   # update 35: Halftone 4x4 (mode 7) replaced by HALFTONE 5X5 (mode 9)
 
 
 def apply(base, blob, size, original=None):
     lo, hi = REGION
     if any(blob[lo:hi]): raise ValueError('update-05 code region is not free')
     if blob[TABLES:TABLES+64] != bayer8_thresholds(): raise ValueError('Bayer table mismatch')
-    if blob[MAGIC_TABLE:MAGIC_TABLE+16] != THRESHOLDS: raise ValueError('Magic table mismatch')
+    if blob[HALFTONE4_TABLE:HALFTONE4_TABLE+16] != THRESHOLDS: raise ValueError('Halftone 4x4 table mismatch')
     if any(blob[HALFTONE5:HALFTONE5_END]): raise ValueError('halftone 5x5 region is not free')
     code = halftone_kernel(base, MAX_DIMENSION, size, 5, HALFTONE5_TAPS, HALFTONE5_TABLE)
     if len(code) > HALFTONE5_TABLE-HALFTONE5: raise ValueError('halftone 5x5 overflow')
@@ -44,7 +44,7 @@ def apply(base, blob, size, original=None):
                       (HALFTONE_TABLE, halftone_table()),
                       (HALFTONE5, code), (HALFTONE5_TABLE, halftone_table(5))):
         blob[off:off+len(code)] = code
-    blob[MAGIC_TABLE:MAGIC_TABLE+16] = magic_thresholds()
+    blob[HALFTONE4_TABLE:HALFTONE4_TABLE+16] = halftone4_thresholds()
     if any(blob[STAMP:STAMP_FONT+64]): raise ValueError('date stamp region is not free')
     code = stamp(base, setting=SETTING if original is not None else None); blob[STAMP:STAMP+len(code)] = code
     if any(blob[ORANGE:ORANGE+ORANGE_MAX]): raise ValueError('colour conversion region is not free')
@@ -64,14 +64,14 @@ def apply(base, blob, size, original=None):
     # rolled back in update 20 (lower preview fps and a flashing, not-black top
     # bar on the camera). Only the faster, bit-exact colour conversion is kept.
     extra = (base+HALFTONE5, base+HALFTONE)
-    code = transform(base, tuple(base+o for o in (*KERNELS, MAGIC, ONE_D))+extra,
+    code = transform(base, tuple(base+o for o in (*KERNELS, HALFTONE4, ONE_D))+extra,
                      base+PRINT_SCRATCH, size, MAX_DIMENSION, after=base+STAMP, before=base+gray_entries['print'], gray=base+tone_gray.TONE,
                      reject_flush=True)
     # Only the transform's own slot: the always-print shutter/capture wrappers
     # (0x800, 0xa00) and diagnostics (0xf00) follow it and must survive.
     if len(code) > SHUTTER-TRANSFORM: raise ValueError('transform overflows into policy wrappers')
     blob[TRANSFORM:SHUTTER] = b'\0'*(SHUTTER-TRANSFORM); blob[TRANSFORM:TRANSFORM+len(code)] = code
-    code = preview(base, tuple(base+o for o in (*ADAPTERS, MAGIC, ONE_D))+extra,
+    code = preview(base, tuple(base+o for o in (*ADAPTERS, HALFTONE4, ONE_D))+extra,
                    base+PREVIEW_SCRATCH, base+LABEL_CODE, force_print=True,
                    dynamic_frames=True, allocation_size=size,
                    busy_word=base+CAPTURE_WORKSPACE_STATE, pre=base+gray_entries['pre'],
@@ -184,8 +184,8 @@ def metadata():
             'effects_v5': {'new_modes': {9: 'Halftone 5x5: [1 7 16 7 1]/32 blur (sigma 0.83) vs 5x5 cosine screen (update 35)',
                                          10: 'Halftone 6x6: binomial sigma-1 blur vs 6x6 cosine screen'},
                            'skipped_modes': list(EXCLUDED),
-                           'magic_input_gamma': MAGIC_GAMMA, 'magic_lowest_threshold': MAGIC_LOWEST,
-                           'magic_thresholds': list(magic_thresholds()),
+                           'halftone4_input_gamma': HALFTONE4_GAMMA, 'halftone4_lowest_threshold': HALFTONE4_LOWEST,
+                           'halftone4_thresholds': list(halftone4_thresholds()),
                            'mode_ids_renumbered': False,
                            'gray_print': 'measured tone curve + line-load + heat-history + head-position compensation (tone_gray.py, model analysis/gray_model_01.json); 190/255 LUT only as non-384 fallback',
                            'gray_conversion': 'strong orange filter 0.55R+0.40G+0.05B via Y+0.4855(Cr-128)-0.0491(Cb-128); print (all modes) and dither preview',

@@ -8,17 +8,16 @@ import struct
 from extended_effects_patch import build as old_build, PREVIEW_SCRATCH, PRINT_SCRATCH
 from combined_print_patch import transform, TRANSFORM, LUT
 from live_preview_patch import Code, preview, control, START, TABLES, CONTROLS
-from build_gray_candidate import branch
+from or1k_subset import branch
 from diffusion_target import make_kernel
 from preview_labels import overlay, font_data, label_data, LABEL_CODE, FONT, LABELS
-from ditherista_target import kernel as fast_kernel, MAGIC, ONE_D, LINEAR, MAGIC_TABLE
+from ditherista_target import kernel as fast_kernel, HALFTONE4, ONE_D, LINEAR, HALFTONE4_TABLE
 from ditherista_tables import THRESHOLDS, LINEAR_Q24
 
 SIZE=0x28800
 # User explicitly requested visual review before any deployment. Both cracked
 # diffusion candidates were rejected; keep the hardware installer closed until
 # the actual Ditherboy-style effect is selected and deployment is requested.
-REVIEW_READY=False
 KERNELS=(0x5000,0x6000,0x7000,0xb000)
 SLICED=(0x1100,0x2100,0x3100,0xc000)
 WORKER=0xd000
@@ -27,15 +26,8 @@ ADAPTERS=(0xe800,0xe820,0xe840,0xe860)
 BANKS=(0xf000,0x12000)
 WORK_IMAGE=0x15000
 META=0x4e40  # mode, next row, active bank, valid, completed, chunks, last status
-NAMES=('Bayer 8x8','Bayer 4x4','Threshold','Floyd–Steinberg','Atkinson','Stucki','Cracked diffusion','Magic 4x4 45','Error Diffusion 1D')
+NAMES=('Bayer 8x8','Bayer 4x4','Threshold','Floyd–Steinberg','Atkinson','Stucki','Cracked diffusion','Halftone 4x4','Error Diffusion 1D')
 MODES=('floyd','atkinson','stucki','cracked')
-
-
-def immutable_ranges():
-    return ((0,0x4e00),(0x4e2c,META),(META+28,PREVIEW_SCRATCH),
-            (PREVIEW_SCRATCH+320*12,PRINT_SCRATCH),
-            (PRINT_SCRATCH+672*12,BANKS[0]),(BANKS[0]+9600,BANKS[1]),
-            (BANKS[1]+9600,WORK_IMAGE),(WORK_IMAGE+320*240,SIZE))
 
 
 def worker(base,rows=32,stucki_rows=16,*,packed_words=False,rows_by_mode=None,extra=None):
@@ -160,9 +152,9 @@ def build(base,original):
     for i,off in enumerate(ADAPTERS):
         a=Code(); a.immediate(0x27,7,0,3+i)
         code=a.finish()+branch(base+off+4,base+WORKER); blob[off:off+len(code)]=code
-    code=preview(base,tuple(base+off for off in (*ADAPTERS,MAGIC,ONE_D)),base+PREVIEW_SCRATCH,base+LABEL_CODE)
+    code=preview(base,tuple(base+off for off in (*ADAPTERS,HALFTONE4,ONE_D)),base+PREVIEW_SCRATCH,base+LABEL_CODE)
     blob[START:TABLES]=b'\0'*(TABLES-START); blob[START:START+len(code)]=code
-    code=transform(base,tuple(base+off for off in (*KERNELS,MAGIC,ONE_D)),base+PRINT_SCRATCH,SIZE)
+    code=transform(base,tuple(base+off for off in (*KERNELS,HALFTONE4,ONE_D)),base+PRINT_SCRATCH,SIZE)
     blob[TRANSFORM:LUT]=b'\0'*(LUT-TRANSFORM); blob[TRANSFORM:TRANSFORM+len(code)]=code
     for i,off in enumerate(CONTROLS):
         code=control(base,i,len(NAMES),base+META)
@@ -170,8 +162,8 @@ def build(base,original):
     blob[EXPAND_LUT:EXPAND_LUT+2048]=bytes(255 if value&(1<<bit) else 0 for value in range(256) for bit in range(7,-1,-1))
     for off,code in ((LABEL_CODE,overlay(base)),(FONT,font_data()),(LABELS,label_data())):
         blob[off:off+len(code)]=code
-    for off,one_d in ((MAGIC,False),(ONE_D,True)):
+    for off,one_d in ((HALFTONE4,False),(ONE_D,True)):
         code=fast_kernel(base,one_d); blob[off:off+len(code)]=code
-    blob[MAGIC_TABLE:MAGIC_TABLE+16]=THRESHOLDS
+    blob[HALFTONE4_TABLE:HALFTONE4_TABLE+16]=THRESHOLDS
     blob[LINEAR:LINEAR+1024]=struct.pack('<256i',*LINEAR_Q24)
     return bytes(blob),patches

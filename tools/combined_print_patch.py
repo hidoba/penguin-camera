@@ -5,7 +5,7 @@ are not covered by a global SD-write prohibition. Stock thermal code is intact.
 """
 import struct
 from live_preview_patch import Code, build as preview_build, BIAS, START, STATE, TABLES, END
-from build_gray_candidate import branch
+from or1k_subset import branch
 
 ENTRY = 0
 TRANSFORM = 0x200

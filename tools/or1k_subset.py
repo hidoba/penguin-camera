@@ -13,6 +13,13 @@ def signed(value, bits=32):
     return value - (1 << bits) if value >> (bits - 1) else value
 
 
+def branch(source, target):
+    """Little-endian l.j word jumping from `source` to `target` (both byte addresses)."""
+    delta = target-source
+    if delta % 4 or not -(1 << 27) <= delta < (1 << 27): raise ValueError('invalid branch')
+    return struct.pack('<I', (delta//4) & 0x3ffffff)
+
+
 class CPU:
     def __init__(self, regions):
         self.regions = regions  # (base, bytearray, writable)

@@ -1,10 +1,10 @@
 """Bounded, no-call, no-jitter OpenRISC kernels for the Ditherista modes."""
 from live_preview_patch import Code
 
-MAGIC=0x27c00
+HALFTONE4=0x27c00
 ONE_D=0x28000
 LINEAR=0x28400
-MAGIC_TABLE=0x48c0
+HALFTONE4_TABLE=0x48c0
 
 def kernel(base,one_d=False,max_dimension=672,allocation_size=0x28800):
     """r3=Y,r4=width,r5=height; r11=status; other registers preserved.
@@ -30,7 +30,7 @@ def kernel(base,one_d=False,max_dimension=672,allocation_size=0x28800):
     a.compare(13,1,2); a.branch(4,'reject')
     a.const(12,base+allocation_size); a.compare(3,12,3); a.branch(4,'disjoint')
     a.const(12,base); a.compare(13,12,2); a.branch(4,'reject')
-    a.label('disjoint'); a.const(6,base+(LINEAR if one_d else MAGIC_TABLE))
+    a.label('disjoint'); a.const(6,base+(LINEAR if one_d else HALFTONE4_TABLE))
     imm(0x27,7,0,0)
     if one_d:
         a.const(17,1<<23); a.const(18,1<<24)

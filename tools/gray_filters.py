@@ -25,7 +25,7 @@ import math
 import struct
 from live_preview_patch import Code
 from ui_trace_patch import BIAS
-from build_gray_candidate import branch
+from or1k_subset import branch
 
 CURVE_STATE = 0x4ec0                  # payload word (update 32): 0 AUTO (boot default), 1 FLAT, 2..4 LUT curves
 CURVE_COUNT = 4                       # highest state; OK cycles 0..CURVE_COUNT
@@ -52,7 +52,6 @@ MAX_COUNT = 1024*1024
 SENSOR_EFFECT = 0x4a3f4               # l.andi r2,r3,0xff in 0x4a3e4(effect)
 SENSOR_EFFECT_OLD, SENSOR_EFFECT_NEW = 0xa44300ff, 0xa44000ff   # -> l.andi r2,r0,0xff
 # Stock filter cycle without colour filters (update 25).
-DOWN_SKIP = 0xbfc0                    # update 25 only (none -> kaleidoscope 0)
 DOWN_TO_FRAMES = 0xbfb0               # update 28b: none -> frame 0
 UP_FRAMES_TO_NONE = 0xc3bc            # frame 0 -> none (update 32: l.j to up_exit_stub)
 DOWN_ZOOM, UP_ZOOM = 0xc12c, 0xc3f4   # update 32: hold-to-zoom branches skipped

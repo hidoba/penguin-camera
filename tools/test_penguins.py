@@ -1,5 +1,4 @@
 """Random-penguin folder (update 37): folder rules, roll orientation, pack format."""
-import io
 import tempfile
 import unittest
 from pathlib import Path

@@ -7,7 +7,7 @@ build; arbitrary packages are not accepted. CRC detects corruption, not attacks.
 """
 import struct
 from live_preview_patch import Code
-from persistent_payload import unpack, HEADER, BASE, SIZE, PAIR, BRANCH, ABSOLUTE
+from persistent_payload import unpack, HEADER, BASE, SIZE, PAIR, BRANCH
 from ui_trace_patch import BIAS
 
 ALLOC=BIAS+0x3ace0

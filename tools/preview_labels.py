@@ -5,7 +5,7 @@ LABEL_CODE=0xd800
 FONT=0xe900
 LABELS=0xec00
 TEXT=('GRAY 190/255','BAYER 8X8','BAYER 4X4','THRESHOLD','FLOYD-STEINBERG',
-      'ATKINSON','STUCKI','CRACKED DIFFUSION','MAGIC 4X4 45','ERROR DIFFUSION 1D')
+      'ATKINSON','STUCKI','CRACKED DIFFUSION','MAGIC 4X4 45','ERROR DIFFUSION 1D')   # mode 7 (Halftone 4x4, hidden) keeps libdither's name: this text is in the v1.0 image
 # Five columns, low bit at top, seven rows. Deliberately limited uppercase UI.
 GLYPHS={
     ' ': (0,0,0,0,0), '-':(8,8,8,8,8), '/':(32,16,8,4,2),

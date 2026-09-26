@@ -303,6 +303,7 @@ their own terms (see [LICENSE.md](LICENSE.md) and
 ## Credits
 
 Penguin camera by Vlad Grankovsky & Tinnix He. Error Diffusion 1D (and the
-Magic 4×4 matrix still present in the code, not selectable) are adapted from
+Halftone 4×4 matrix, libdither's "Magic 4×4 45", still in the code but not
+selectable) are adapted from
 Robert Kist's libdither — see
 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

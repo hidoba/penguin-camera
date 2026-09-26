@@ -89,7 +89,7 @@ else is checked byte for byte by `penguin_flash.py check`.
 | `05000`–`0bf00` | Print kernels, Halftone 5×5 (`05400`), curve LUTs/code, icons, Halftone 6×6, date stamp, orange conversion, tone model |
 | `0c400`–`0ee40` | Screen overlay, preview worker, label font and names |
 | `0f000`–`27c00` | Preview banks + work image (runtime) |
-| `27c00`–`2b800` | Magic 4×4 (not selectable) / Error Diffusion 1D kernels, print scratch (runtime) |
+| `27c00`–`2b800` | Halftone 4×4 (not selectable) / Error Diffusion 1D kernels, print scratch (runtime) |
 | `2b800`–`2e000` | Native menu and capture loan |
 | `2e000`–`30400` | Flash-backed Random-penguin reader/worker, tables |
 

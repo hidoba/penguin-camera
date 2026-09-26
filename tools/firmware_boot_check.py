@@ -6,8 +6,6 @@ payload, and verifies: every hook word, the stock application text, the loader's
 relocation/hook tables and the WHOLE static payload body (only the regions in
 payload_layout.RUNTIME may differ). No uploads, allocations, resets or writes.
 """
-import argparse
-import json
 import struct
 from pathlib import Path
 from persistent_payload import unpack, relocate, relocate_hooks, sha
@@ -73,19 +71,3 @@ def read_ram(output):
         if claimed: usb.util.release_interface(dev, 4)
         if detached and certain: dev.attach_kernel_driver(4)
         usb.util.dispose_resources(dev)
-
-
-def main():
-    p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--image', type=Path, required=True, help='the installed 4 MiB image')
-    p.add_argument('--payload', type=Path, required=True, help='its native-effects-menu.pgfx')
-    p.add_argument('--output', type=Path, required=True)
-    args = p.parse_args()
-    if args.output.exists(): p.error('new output directory required')
-    args.output.mkdir(parents=True)
-    report = check(read_ram(args.output), args.image.read_bytes(), args.payload.read_bytes())
-    (args.output/'report.json').write_text(json.dumps(report, indent=2)+'\n')
-    print(json.dumps(report, indent=2))
-
-
-if __name__ == '__main__': main()

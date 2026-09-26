@@ -18,7 +18,7 @@ before its own compare at 0x87d4.
 import struct
 from live_preview_patch import Code
 from ui_trace_patch import BIAS
-from build_gray_candidate import branch
+from or1k_subset import branch
 
 IDLE_CODE = 0xab00             # update 28 (0xce80 in 27, 0xe880 in 24-26, 0xe900 in 23)
 MAX_CODE = 0x100                # up to ORANGE 0xac00

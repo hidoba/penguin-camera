@@ -6,10 +6,8 @@ to 96x167, 16 gray levels v*17). Stored as 4-bit luma (low nibble = even x), spl
 by rows over three free payload blocks after the sliced Floyd / Atkinson / Stucki
 kernels; drawn into the menu's linear 320x240 Y plane after the text renderer.
 """
-from pathlib import Path
 from live_preview_patch import Code
 
-ROOT = Path(__file__).resolve().parents[1]
 from project_paths import MENU_PENGUIN as IMAGE
 W, H = 96, 167
 X0, Y0 = 320-W, 0

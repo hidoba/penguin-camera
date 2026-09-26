@@ -5,7 +5,7 @@ printer, or capture/save calls. Random penguin request needs a validated worker.
 """
 import struct
 from live_preview_patch import Code,BIAS
-from build_gray_candidate import branch
+from or1k_subset import branch
 from menu_target import DRAW,SIZE,protected_range
 
 DISPLAY=0x2c800
@@ -15,8 +15,6 @@ ACTIVATE=0x2d200
 STATUS=0x2d600  # last draw status, draw count, pending random-print request
 SELECTION=0x02089334
 LCD=(0x0208a6e4,0x0208a718)
-LCD_BYTES=122880
-LCD_Y=81920
 MENU=(0x0208a640,0x0208a674)
 FRAME_Y=320*240
 FRAME_BYTES=FRAME_Y*3//2

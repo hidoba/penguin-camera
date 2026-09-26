@@ -5,7 +5,7 @@ No frame pixels are changed. Trace ring stores callback args/settings and two
 """
 import struct
 from or1k_subset import Assembler
-from build_gray_candidate import branch
+from or1k_subset import branch
 
 BIAS=0x02000000-0x2400
 SIZE=0x5000
@@ -130,23 +130,3 @@ def build_filtered_dispatch(base,original):
     patches[-1]['replacement']=branch(BIAS+DISPATCH_HOOK,base+FILTERED_SLOT).hex()
     return bytes(blob),patches
 
-def decode(data):
-    if len(data)!=SIZE or struct.unpack_from('<I',data,HEADER)[0]!=MAGIC: raise ValueError('trace magic/size mismatch')
-    _,count,capacity,stride=struct.unpack_from('<IIII',data,HEADER)
-    if (capacity,stride)!=(CAPACITY,STRIDE): raise ValueError('trace geometry mismatch')
-    result=[]
-    for sequence in range(max(1,count-CAPACITY+1),count+1):
-        pos=RECORDS+((sequence-1)%CAPACITY)*STRIDE
-        words=struct.unpack_from('<16I',data,pos)
-        if words[0]!=sequence: raise ValueError('incomplete/overwritten trace record')
-        result.append({'sequence':sequence,'event':hex(words[1]),'handler':hex(words[2]),
-            'payload':words[3], 'arguments':[hex(v) for v in words[4:10]],
-            'settings_0_3':words[12].to_bytes(4,'little').hex(),
-            'settings_120_123':words[13].to_bytes(4,'little').hex(),
-            'descriptors':[{'pointer':hex(words[10+j]),'bytes':data[pos+64+j*64:pos+116+j*64].hex()}
-                           if words[14]&(1<<j) else {'pointer':hex(words[10+j]),'invalid':True}
-                           for j in range(2)]})
-        if words[1]&0x10000:
-            result[-1].update(source='queued-key dispatcher',event=hex(words[1]&0xffff),
-                              secondary_handler=hex(words[15]))
-    return {'count':count,'records':result,'note':'Snapshots precede the unchanged original handler.'}

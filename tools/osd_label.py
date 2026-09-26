@@ -118,30 +118,6 @@ def _descriptor_ok(a, fail):
         imm(0x21, 13, 12, off); a.compare(13, 14, 1); a.branch(4, fail)
 
 
-def osd_label(base, max_mode, allocation_size):
-    """Same call ABI as preview_labels.overlay: r3 (unused), r4 enabled, r5 mode.
-    Preserves every register; returns r11 = 0. Draws into both overlay buffers."""
-    a = Code(); imm = a.immediate; origin = base+LABEL_CODE
-    saved = (2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 14, 15, 16, 17, 18, 19, 20)
-    frame = len(saved)*4
-    imm(0x27, 1, 1, -frame)
-    for i, r in enumerate(saved): a.store(r, 1, i*4)
-    _descriptor_ok(a, 'done')
-    imm(0x21, 13, 12, 0x20); imm(0x21, 14, 12, 0x10); a.compare(13, 14, 0); a.branch(4, 'in_use_ok')
-    imm(0x21, 14, 12, 0x18); a.compare(13, 14, 1); a.branch(4, 'done')
-    a.label('in_use_ok')
-    for k, off in enumerate((0x10, 0x18)):
-        a.const(12, DESCRIPTOR); imm(0x21, 2, 12, off)
-        imm(0x21, 4, 1, saved.index(4)*4); imm(0x21, 5, 1, saved.index(5)*4)
-        _section(a, str(k), origin, base, max_mode, allocation_size)
-    a.label('done')
-    for i, r in enumerate(saved): imm(0x21, r, 1, i*4)
-    imm(0x27, 1, 1, frame); imm(0x27, 11, 0, 0); a.emit(0x44004800)
-    code = a.finish()
-    if len(code) > FLIP_WRAP-LABEL_CODE: raise ValueError('osd label overflow')
-    return code
-
-
 # Update 18: the stock UI re-renders its overlay into the spare buffer and flips
 # every second (clock refresh), so a per-frame label was missing between the flip
 # and the next preview frame. Hook the single flip call (flash 0x61d0 in 0x619c:
@@ -154,46 +130,9 @@ MODE_WORD = 0x02085e9c
 DMA_WAIT = BIAS+0x29c3c           # waits for / retires the 0x29ca0 DMA copy; clobbers r3..r5
 
 
-def flip_wrapper(base, max_mode, allocation_size, state):
-    from build_gray_candidate import branch
-    import struct
-    a = Code(); imm = a.immediate; origin = base+FLIP_WRAP
-    # Stands in for the call `jal 0x3783c` at 0x61d0: keep the flip arguments
-    # (r3..r8), the link register and every callee-saved register this code or
-    # _section touches; caller-saved temporaries are dead after that call (the
-    # caller only reloads r11 from its stack and returns). Update 24 (size).
-    saved = (2, 3, 4, 5, 6, 7, 8, 9, 10, 14, 16, 18, 20)
-    frame = len(saved)*4
-    imm(0x27, 1, 1, -frame)
-    for i, r in enumerate(saved): a.store(r, 1, i*4)
-    a.const(12, MODE_WORD); imm(0x21, 12, 12, 0); imm(0x2f, 1, 12, 3); a.branch(4, 'tail')
-    imm(0x2f, 1, 3, 0); a.branch(4, 'tail')                       # layer 0 only
-    _descriptor_ok(a, 'tail')
-    imm(0x21, 13, 12, 0x10); a.compare(4, 13, 0); a.branch(4, 'buffer_ok')
-    imm(0x21, 13, 12, 0x18); a.compare(4, 13, 1); a.branch(4, 'tail')
-    a.label('buffer_ok')
-    # Update 22: the stock present path copies its UI canvas into this buffer with
-    # the asynchronous DMA memcpy 0x29ca0 and flips without waiting; painting now
-    # would be overwritten by the tail of that copy (left of the screen). Wait for
-    # it with the stock wait routine first (no-op when no copy is in flight).
-    imm(0x21, 4, 1, saved.index(4)*4)
-    a.call(origin, DMA_WAIT)
-    imm(0x21, 4, 1, saved.index(4)*4)
-    imm(0x2a, 2, 4, 0)
-    a.const(12, state); imm(0x21, 4, 12, 0); imm(0x21, 5, 12, 4)   # preview enabled/mode
-    _section(a, 'f', origin, base, max_mode, allocation_size)
-    a.label('tail')
-    for i, r in enumerate(saved): imm(0x21, r, 1, i*4)
-    imm(0x27, 1, 1, frame)
-    code = a.finish()
-    code += branch(origin+len(code), BIAS+FLIP_TARGET)               # l.j into the stock flip
-    if len(code) > 0x300: raise ValueError('flip wrapper overflow')
-    return code
-
-
 def flip_hook(original, base):
     import struct
-    from build_gray_candidate import branch
+    from or1k_subset import branch
     old = original[FLIP_CALL:FLIP_CALL+4]
     expected = struct.unpack('<I', branch(BIAS+FLIP_CALL, BIAS+FLIP_TARGET))[0] | 1 << 26
     if old != struct.pack('<I', expected): raise ValueError('unexpected overlay flip call')

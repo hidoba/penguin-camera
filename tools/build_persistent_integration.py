@@ -5,7 +5,6 @@ Contains checked resource replacements, relocatable native code, embedded
 penguins and a proposed flash layout. Explicit blockers prevent confusing this
 work-in-progress with a complete firmware image.
 """
-import argparse
 import hashlib
 import io
 import json
@@ -213,20 +212,3 @@ booting directly with USB does not install custom handlers for that session.
                       'penguins':count,'proposed_flash_bytes':manifest['upper_2MiB_bytes_used_including_alignment'],
                       'remaining_bytes':manifest['remaining_upper_2MiB_bytes']},indent=2))
     return manifest
-
-if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--assets',type=Path,default=ROOT/'analysis/release_artwork_01')
-    p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--print-assets',type=Path,help='PGPK v2 assets; include the flash-backed native worker')
-    p.add_argument('--usb-recovery-bypass',action='store_true',help='Boot with USB: skip custom extension before allocation/SPI read')
-    p.add_argument('--ram-autostart',action='store_true',help='Preserve entire boot-stub sector: publish Camera startup as a checked RAM hook')
-    p.add_argument('--penguin-corrections',action='store_true',help='Accept verified battery state 6 and rotate penguin prints 180 degrees')
-    p.add_argument('--regression-fixes',action='store_true',help='Candidate capture workspace loan, visible-band labels and larger bounded preview chunks')
-    p.add_argument('--ui-cleanup',action='store_true',help='Skip Stucki in effect selection and hide the normal grayscale label')
-    p.add_argument('--random-timing',action='store_true',help='Mix uptime at each Random penguin press; preserve no consecutive repeats')
-    p.add_argument('--preview-speed',action='store_true',help='Pixel-identical diffusion and word-packing optimizations; same callback budget')
-    p.add_argument('--effects-v5',action='store_true',help='Update 05: Bayer+edges, Halftone, hide Threshold, lifted Magic curve')
-    args=p.parse_args();assemble(args.assets,args.output,args.print_assets,args.usb_recovery_bypass,args.ram_autostart,
-                               penguin_corrections=args.penguin_corrections,regression_fixes=args.regression_fixes,
-                               ui_cleanup=args.ui_cleanup,random_timing=args.random_timing,preview_speed=args.preview_speed,effects_v5=args.effects_v5)

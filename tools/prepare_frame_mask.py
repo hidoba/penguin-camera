@@ -1,14 +1,13 @@
-#!/usr/bin/env python3
-"""Rebuild photo frames 006-009 with a spatial transparency mask. Offline only.
+"""Frame JPEG encoder with a spatial transparency mask (used by frames.py).
 
 Stock composition (flash 0x40fcc..0x41104) copies a frame pixel over the photo
-only when its decoded Y > 27; Y <= 27 lets the photo through. The Y=29 curve
-kept source Y < 15 unchanged, so genuinely black artwork (text, the penguin's
-eyes/head, dark robot parts) stayed transparent, and JPEG noise made letters
-speckled. Instead:
+only when its decoded Y > 27; Y <= 27 lets the photo through. A plain luminance
+rule would make genuinely black artwork (text, eyes, dark details) transparent
+and JPEG noise would speckle it. Instead:
 
-- transparent = connected (4-neighbour) regions of source Y < 15 with at least
-  MIN_BACKGROUND pixels, plus tiny enclosed specks inside them; encoded as
+- transparent = the given mask (a PNG's alpha channel), or else connected
+  (4-neighbour) regions of source Y < 15 with at least MIN_BACKGROUND pixels,
+  plus tiny enclosed specks inside them; encoded as
   exact Y=0, Cb=Cr=128;
 - everything else is artwork: Y' = FLOOR + round(Y * (255-FLOOR) / 255), with
   source chroma, so black artwork stays near-black but clearly visible;
@@ -16,18 +15,11 @@ speckled. Instead:
   master and re-encoded (bounded closed loop), keeping a margin over 27 for
   decoder differences. Slot sizes/dimensions/sampling are unchanged.
 """
-import argparse
 import io
-import json
-import shutil
 from collections import deque
-from pathlib import Path
 from PIL import Image
-from analyze_firmware import EXPECTED_SHA256, parse_resources
-from prepare_release_artwork import ROOT, digest, load_rgb, fit_jpeg, sheet
-from replace_resource import replace
+from prepare_release_artwork import fit_jpeg
 
-FRAME_IDS = {6, 7, 8, 9}
 CUTOFF = 15
 MIN_BACKGROUND = 2000
 MAX_SPECK = 24
@@ -116,62 +108,3 @@ def build_frame(rgb, old_jpeg, budget, mask=None):
     return image, payload, quality, sampling, bg, bytes(target), audit
 
 
-def prepare(assets, out, sources):
-    if out.exists(): raise ValueError('output exists; never overwrite previous assets')
-    original = (ROOT/'flash_zb25vq32_read1.bin').read_bytes()
-    report = json.loads((assets/'manifest.json').read_text())
-    if digest(original) != EXPECTED_SHA256 or report['original_sha256'] != EXPECTED_SHA256:
-        raise ValueError('original firmware mismatch')
-    _, entries = parse_resources(original); entries = {e['index']: e for e in entries}
-    prepared = []
-    for item in report['replacements']:
-        if digest((assets/item['output']).read_bytes()) != item['sha256']: raise ValueError('asset changed')
-        if item['index'] not in FRAME_IDS: continue
-        path = sources/Path(item['source']).name
-        if digest(path.read_bytes()) != item['source_sha256']: raise ValueError(f'source changed: {path}')
-        entry = entries[item['index']]
-        with Image.open(io.BytesIO(original[entry['offset']:entry['offset']+entry['size']])) as old:
-            result = build_frame(load_rgb(path), old, entry['size'])
-        replace(original, item['index'], result[1])
-        prepared.append((item, path, *result))
-        print(item['index'], json.dumps({k: v for k, v in result[-1].items() if k != 'closed_loop'}),
-              result[-1]['closed_loop'][-1])
-    shutil.copytree(assets, out)
-    masters = out/'frame-mask-masters'; masters.mkdir()
-    comparisons = []
-    for item, path, image, payload, quality, sampling, bg, target, audit in prepared:
-        stem = Path(item['output']).stem
-        (out/item['output']).write_bytes(payload)
-        with Image.open(io.BytesIO(payload)) as opened: preview = opened.convert('RGB')
-        preview.save(out/'resource-previews'/f'{stem}.png')
-        Image.frombytes('L', image.size, bytes(255 if b else 0 for b in bg)).save(masters/f'{stem}-transparent.png')
-        Image.frombytes('L', image.size, target).save(masters/f'{stem}-Y.png')
-        (masters/f'{stem}.ycbcr').write_bytes(image.tobytes())
-        item.update(sha256=digest(payload), bytes=len(payload), quality=quality, subsampling=sampling,
-                    frame_mask_audit=audit, frame_mask_master=f'frame-mask-masters/{stem}.ycbcr')
-        item.pop('frame_curve_audit', None); item.pop('frame_curve_master', None)
-        # Simulated composite over mid-gray: photo shows only where Y <= 27.
-        dec = decoded_y(payload)
-        sim = Image.frombytes('L', image.size, bytes(128 if d <= TRANSPARENT_MAX else d for d in dec))
-        comparisons.extend([(load_rgb(path), f'{stem} source'),
-                            (sim.convert('RGB'), f'Q{quality} {len(payload):,}/{item["slot_bytes"]:,} B; gray = photo')])
-    report.pop('frame_luminance_curve', None)
-    report['frame_transparency_mask'] = {
-        'stock_rule': 'decoded frame Y <= 27 is transparent (flash 0x40fcc..0x41104)',
-        'background': f'4-connected source Y < {CUTOFF} regions >= {MIN_BACKGROUND} px, enclosed specks <= {MAX_SPECK} px; Y=0, Cb=Cr=128',
-        'artwork': f'Y = {FLOOR} + round(Y*{255-FLOOR}/255), source chroma',
-        'closed_loop': f'artwork decoded below {SAFE} raised and re-encoded, up to {ITERATIONS} passes'}
-    report['status'] = 'OFFLINE MASKED FRAME ASSETS (update 05)'
-    (out/'manifest.json').write_text(json.dumps(report, indent=2)+'\n')
-    sheet(comparisons, out/'frame-mask-comparison.png', 'Frames: source / decoded composite over gray photo', 2, (660, 410))
-    (out/'README.md').write_text(__doc__+'\nSee manifest.json frame_mask_audit per frame.\n\n---\nPrevious notes:\n\n'
-                                 + (assets/'README.md').read_text())
-    return report
-
-
-if __name__ == '__main__':
-    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument('--assets', type=Path, default=ROOT/'analysis/release_artwork_04')
-    p.add_argument('--sources', type=Path, required=True)
-    p.add_argument('--output', type=Path, required=True)
-    args = p.parse_args(); prepare(args.assets, args.output, args.sources)

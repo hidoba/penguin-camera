@@ -5,9 +5,7 @@ read/verify the package, relocate it, validate original hook words, synchronize
 caches and only then install hooks. Current live frame bindings still need work.
 """
 import hashlib
-import json
 import struct
-from pathlib import Path
 from persistent_effects_patch import build, SIZE, NAMES
 from ui_trace_patch import BIAS
 from or1k_subset import signed

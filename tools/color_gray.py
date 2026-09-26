@@ -9,7 +9,6 @@ bytes (verified from the yellow stock camera icon, resource 072, in RAM).
 from live_preview_patch import Code
 
 KR, KB = 124, 13          # round(0.48545*256), round(0.049054*256)
-WEIGHTS = (0.55, 0.40, 0.05)
 ORANGE = 0xac00
 MAX_CODE = 0x400
 

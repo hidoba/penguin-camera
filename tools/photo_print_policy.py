@@ -5,12 +5,11 @@ Never invokes handlers by itself, saves images to storage, or alters dithering.
 """
 import struct
 from live_preview_patch import Code, BIAS
-from build_gray_candidate import branch
+from or1k_subset import branch
 
 SHUTTER=0x800
 CAPTURE=0xa00
 DIAGNOSTICS=0xf00
-DIAGNOSTIC_SIZE=32
 FLAG=0x02089342
 REMAINING=0x0207e258
 HOOKS=((0x805f4,0xb3e0,SHUTTER),(0x805fc,0xb9b4,CAPTURE))

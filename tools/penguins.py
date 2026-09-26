@@ -13,7 +13,6 @@ Limits: 1..64 pictures (the flash worker's directory), each JPEG <= 128 KiB
 flash after the pack address (checked by the integration build).
 """
 from pathlib import Path
-from PIL import Image
 from frames import natural_key
 from prepare_release_artwork import load_rgb, roll_image, encode_jpeg, digest
 from prepare_print_penguins import printer_layout, pack, validate

@@ -3,8 +3,8 @@ import unittest
 from PIL import Image
 from prepare_release_artwork import encode_jpeg
 from prepare_print_penguins import pack,validate
-from flash_penguin_worker import build,INNER,CONTROL,SIZE,META,FTABLE,FTABLE_EXT,layout
-from random_penguin_ram import TABLE,STATE
+from flash_penguin_worker import build, INNER, CONTROL, SIZE, FTABLE, FTABLE_EXT, layout
+from random_penguin_ram import STATE
 from or1k_subset import CPU
 from ui_trace_patch import BIAS
 
