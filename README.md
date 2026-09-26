@@ -242,13 +242,20 @@ Reading has been proven on real hardware; restoring has not.
 The photos below were taken while working out how the camera works. You do
 **not** need to open your camera to install the firmware.
 
-| | |
-| --- | --- |
-| <img src="docs/images/camera-opened.jpg" alt="Opened camera" width="400"> | **Opened camera.** Main board in the front shell, with the battery (yellow) and the speaker. |
-| <img src="docs/images/mainboard.jpg" alt="Main board" width="400"> | **Main board AMG-05-3295B-V1.** AX3295B system-on-chip (the square chip), camera module on the orange ribbon, and the 4 MiB SPI flash that holds the firmware. The buttons are on this board too. |
-| <img src="docs/images/thermal-print-head.jpg" alt="Thermal print head" width="400"> | **Thermal printer LIYIN MTP02-IXC.** 384 heating dots across the paper; the small motor feeds the paper. |
-| <img src="docs/images/pico-flash-reader.jpg" alt="Raspberry Pi Pico flash reader" width="400"> | **Raspberry Pi Pico as a flash reader.** Used once to copy the original firmware straight from the flash chip. The chip was desoldered from the board for this: when the board is powered, the AX3295B chip starts reading the flash at the same time and the two readers get in each other's way. It is also the last-resort recovery tool, see [docs/RECOVERY.md](docs/RECOVERY.md). |
-| <img src="docs/images/spectrophotometer.jpg" alt="Spectrophotometer measuring a gray chart" width="400"> | **Measuring the printer.** A spectrophotometer (EFI ES-2000) read printed gray-step charts. From these measurements the firmware models how dark each dot really prints (heat build-up, line load, position on the head), so grays come out as intended. |
+<table>
+  <tr>
+    <td width="50%" valign="top"><img src="docs/images/camera-opened.jpg" alt="Opened camera" width="100%"><br><b>Opened camera.</b> Main board in the front shell, with the battery (yellow) and the speaker.</td>
+    <td width="50%" valign="top"><img src="docs/images/mainboard.jpg" alt="Main board" width="100%"><br><b>Main board AMG-05-3295B-V1.</b> AX3295B system-on-chip (the square chip), camera module on the orange ribbon, and the 4 MiB SPI flash that holds the firmware. The buttons are on this board too.</td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="docs/images/thermal-print-head.jpg" alt="Thermal print head" width="100%"><br><b>Thermal printer LIYIN MTP02-IXC.</b> 384 heating dots across the paper; the small motor feeds the paper.</td>
+    <td width="50%" valign="top"><img src="docs/images/spectrophotometer.jpg" alt="Spectrophotometer measuring a gray chart" width="100%"><br><b>Measuring the printer.</b> A spectrophotometer (EFI ES-2000) read printed gray-step charts. From these measurements the firmware models how dark each dot really prints (heat build-up, line load, position on the head), so grays come out as intended.</td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><img src="docs/images/pico-flash-reader.jpg" alt="Raspberry Pi Pico flash reader" width="100%"><br><b>Raspberry Pi Pico as a flash reader.</b> Used once to copy the original firmware straight from the flash chip. The chip was desoldered from the board for this: when the board is powered, the AX3295B chip starts reading the flash at the same time and the two readers get in each other's way. It is also the last-resort recovery tool, see <a href="docs/RECOVERY.md">docs/RECOVERY.md</a>.</td>
+    <td width="50%"></td>
+  </tr>
+</table>
 
 ## Build from source
 
