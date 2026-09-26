@@ -284,9 +284,12 @@ accepted, and prints the image's SHA-256 (it must match the release).
 | `frames/` | Photo frames (one picture per frame) |
 | `penguins/` | *Random penguin* print pictures (one picture per print) |
 | `assets/` | Power-on/off splash screens (`assets/splash-screens/`), menu penguin, tone model, boot ROM image |
-| `docs/` | How it works, recovery, photos (`docs/images/`) |
+| `docs/` | How it works, stock firmware reference, recovery, photos (`docs/images/`) |
 
-See [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md) for the technical design.
+See [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md) for the technical design, and
+[docs/STOCK-FIRMWARE.md](docs/STOCK-FIRMWARE.md) for the reverse-engineered stock
+firmware: flash layout, boot process, resources, RAM globals, stock functions,
+button events, display, printing and USB, with addresses.
 
 ## License
 

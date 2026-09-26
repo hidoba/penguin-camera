@@ -1,5 +1,8 @@
 # How it works
 
+How this firmware changes the camera. For the stock firmware itself (memory map,
+addresses, stock functions, events) see [STOCK-FIRMWARE.md](STOCK-FIRMWARE.md).
+
 ## Hardware
 
 | Part | Detail |
