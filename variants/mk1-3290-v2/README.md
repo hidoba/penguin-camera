@@ -73,6 +73,21 @@ Generated images go into `analysis/build_01/` and `analysis/build_04/`, which ar
 ignored by Git. Builds refuse changed reference hashes. Keep the original dump
 untouched. See [WORKFLOW.md](docs/WORKFLOW.md) before using any USB command.
 
+## Original stock firmware
+
+[Download the original MK1 firmware dump](https://raw.githubusercontent.com/hidoba/penguin-camera/main/variants/mk1-3290-v2/flash_read1.bin)
+([repository file](flash_read1.bin), [SHA-256 checksum](flash_read1.bin.sha256)).
+This is the untouched **4 MiB factory dump**, captured twice with the Pico before
+custom artwork or effects were installed. Both reads matched byte for byte.
+From this variant folder, verify it with:
+
+```bash
+sha256sum -c flash_read1.bin.sha256
+```
+
+Keep it unchanged as the stock build/compatibility reference. Installation and
+recovery must preserve each camera's own live settings; follow the workflow guide.
+
 | Reference | SHA-256 |
 | --- | --- |
 | Original `flash_read1.bin`, read twice with Pico | `33ac2db5716dacf06b60f97c5efbb2b2b77d820fe2b13e58c1eeb4379094fab5` |
