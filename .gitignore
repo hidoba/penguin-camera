@@ -3,3 +3,9 @@ __pycache__/
 # build outputs and per-camera install records (they contain full flash backups)
 /build/
 /runs/
+
+# MK1 variant generated images, extracted stock resources and private USB records
+/variants/mk1-3290-v2/analysis/
+/variants/mk1-3290-v2/build/
+/variants/mk1-3290-v2/runs/
+/variants/mk1-3290-v2/resources/

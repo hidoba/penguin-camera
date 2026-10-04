@@ -1,0 +1,104 @@
+{
+  "001.jpg": {
+    "bytes": 45919,
+    "rounds": 6,
+    "artwork_pixels": 42421,
+    "artwork_decoding_transparent": 0,
+    "artwork_min_decoded_y": 31,
+    "background_decoding_visible": 0
+  },
+  "002.jpg": {
+    "bytes": 91007,
+    "rounds": 6,
+    "artwork_pixels": 84450,
+    "artwork_decoding_transparent": 0,
+    "artwork_min_decoded_y": 31,
+    "background_decoding_visible": 0
+  },
+  "003.jpg": {
+    "bytes": 62174,
+    "rounds": 8,
+    "artwork_pixels": 48834,
+    "artwork_decoding_transparent": 0,
+    "artwork_min_decoded_y": 31,
+    "background_decoding_visible": 0
+  },
+  "004.jpg": {
+    "bytes": 83569,
+    "rounds": 8,
+    "artwork_pixels": 98485,
+    "artwork_decoding_transparent": 0,
+    "artwork_min_decoded_y": 31,
+    "background_decoding_visible": 0
+  },
+  "005.jpg": {
+    "bytes": 65772,
+    "rounds": 8,
+    "artwork_pixels": 82961,
+    "artwork_decoding_transparent": 0,
+    "artwork_min_decoded_y": 31,
+    "background_decoding_visible": 0
+  },
+  "006.jpg": {
+    "bytes": 97133,
+    "rounds": 8,
+    "artwork_pixels": 99016,
+    "artwork_decoding_transparent": 0,
+    "artwork_min_decoded_y": 31,
+    "background_decoding_visible": 0
+  },
+  "007.jpg": {
+    "bytes": 182821,
+    "rounds": 4,
+    "artwork_pixels": 286281,
+    "artwork_decoding_transparent": 0,
+    "artwork_min_decoded_y": 31,
+    "background_decoding_visible": 0
+  },
+  "011.jpg": {
+    "bytes": 28562
+  },
+  "048.jpg": {
+    "bytes": 46231
+  },
+  "049.jpg": {
+    "bytes": 46231
+  },
+  "032.bmp": {
+    "bytes": 27704,
+    "key_pixels": 355
+  },
+  "034.bmp": {
+    "bytes": 27704,
+    "key_pixels": 377
+  },
+  "035.bmp": {
+    "bytes": 27704,
+    "key_pixels": 396
+  },
+  "036.bmp": {
+    "bytes": 27704,
+    "key_pixels": 383
+  },
+  "037.bmp": {
+    "bytes": 27704,
+    "key_pixels": 378
+  },
+  "038.bmp": {
+    "bytes": 27704,
+    "key_pixels": 382
+  },
+  "033.jpg": {
+    "bytes": 53295,
+    "composed_from": [
+      "011",
+      "035",
+      "038",
+      "032",
+      "036",
+      "034",
+      "037"
+    ]
+  },
+  "total_bytes": 968938
+}

@@ -13,6 +13,7 @@ This covers the pictures in:
 - `assets/splash-screens/` — the power-on and power-off screens,
 - `assets/menu-penguin/` — the menu penguin,
 - `docs/images/` — the photos of the camera and its prints,
+- `variants/mk1-3290-v2/assets/` — the MK1 source/prepared artwork and previews,
 
 except any picture made by someone else, which stays with its owner. The
 *Random penguin* photos in `penguins/` are not ours: they are public domain or

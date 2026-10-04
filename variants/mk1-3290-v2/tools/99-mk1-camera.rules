@@ -1,0 +1,2 @@
+# MK1-3290-V2 camera (AX3291A), USB mass-storage-only mode "GENERAL - AUDIO".
+SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="0219", ATTR{idProduct}=="3280", GROUP="plugdev", MODE="0660"

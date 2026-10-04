@@ -1,0 +1,127 @@
+{
+  "color_gray": {
+    "source": "penguin development tools/color_gray.py",
+    "sha256": "f4ef723d79f543b679031e21084ead3d16bfe9dae1a5485e7df6886f24fde03c",
+    "selected": [
+      "KB",
+      "KR",
+      "MAX_CODE",
+      "ORANGE",
+      "WEIGHTS",
+      "orange",
+      "reference"
+    ]
+  },
+  "tone_gray": {
+    "source": "penguin development tools/tone_gray.py",
+    "sha256": "24d1bcd4c276ce4e063a9e9396d5664d57cd13aa7bb39e75631488f0eb41c2aa",
+    "selected": [
+      "BINV_TABLE",
+      "COL_TABLE",
+      "C_MAX",
+      "DARK_BLEND",
+      "MAX_CODE",
+      "OLD_SCALE",
+      "S_INIT",
+      "TONE",
+      "TYPICAL",
+      "T_TABLE",
+      "UNIT",
+      "blob_tables",
+      "line_term",
+      "native",
+      "reference",
+      "srgb_lstar",
+      "tables"
+    ]
+  },
+  "date_stamp": {
+    "source": "penguin development tools/date_stamp.py",
+    "sha256": "7686ea1b0ca01f97786db000d3caa588429e82f2e737ce93fe580e9ec90bb504",
+    "selected": [
+      "ADVANCE",
+      "CHARS",
+      "CLOCK",
+      "FONT_CHARS",
+      "MARGIN",
+      "MAX_CODE",
+      "MIN_H",
+      "MIN_W",
+      "SCALE",
+      "SETTING",
+      "SETTING_ON",
+      "STAMP",
+      "STAMP_FONT",
+      "STROKE",
+      "TEXT_H",
+      "TEXT_W",
+      "X0",
+      "font",
+      "reference",
+      "stamp",
+      "text"
+    ]
+  },
+  "gray_filters": {
+    "source": "penguin development tools/gray_filters.py",
+    "sha256": "4b333c6ca240dfd4c12a9a7950b41284cda80ee8f363d47abe1715c229379c44",
+    "selected": [
+      "AUTO",
+      "CURVE_COUNT",
+      "CURVE_SAVED",
+      "CURVE_STATE",
+      "FLAT",
+      "FRAME_TRANSPARENT_MAX",
+      "LUTS",
+      "MAX_COUNT",
+      "MIN_RANGE",
+      "MIN_SAMPLES",
+      "apply_reference",
+      "auto_lut",
+      "curve_sub",
+      "curves"
+    ]
+  },
+  "diffusion_target": {
+    "source": "penguin development tools/diffusion_target.py",
+    "sha256": "3393a1f071af9f960759d559596e61bd9f45de80a4ef29e99069dc5d9e9ce984",
+    "selected": [
+      "MAX_CODE",
+      "TAPS",
+      "make_kernel"
+    ]
+  },
+  "effects_v5_target": {
+    "source": "penguin development tools/effects_v5_target.py",
+    "sha256": "f271df361b177b41e65bb77ab3e695f876ee797f5ddda72234a3b1b4e9daa9a2",
+    "selected": [
+      "HALFTONE_TABLE",
+      "MAX_CODE",
+      "MIN_WIDTH",
+      "SAVED",
+      "_blur5",
+      "_copy_row",
+      "_epilogue",
+      "halftone_kernel",
+      "halftone_table"
+    ]
+  },
+  "preview_labels": {
+    "source": "penguin development tools/preview_labels.py",
+    "sha256": "cce1216f85e36ca166df43c98a07be41836543acfadbdf4bdb6d3a7c35c99fff",
+    "selected": [
+      "GLYPHS",
+      "font_data"
+    ]
+  },
+  "effects_v5": {
+    "source": "penguin development tools/effects_v5.py",
+    "sha256": "7d946bfe716da7d067350fc37a766a919fceb86f5e5f58b988760af743eca35e",
+    "selected": [
+      "HALFTONE_TAPS",
+      "bayer8_thresholds",
+      "halftone",
+      "halftone_thresholds"
+    ]
+  }
+}

@@ -9,8 +9,9 @@ LICENSE-ARTWORK.md. The *Random penguin* photos in `penguins/` are public domain
 or CC0 (see `penguins/SOURCES.md`).
 
 Not covered by this license (they keep their owners' terms):
-- `flash_zb25vq32_read1.bin` and `assets/rom/` — the camera manufacturer's
-  original firmware and the SoC boot ROM image, included for compatibility
+- `flash_zb25vq32_read1.bin`, `variants/mk1-3290-v2/flash_read1.bin` and
+  `assets/rom/` — the camera manufacturer's original firmware and the SoC boot ROM
+  image, included for compatibility
   checks, building and restoring.
 - Code adapted from libdither — see THIRD_PARTY_NOTICES.md.
 - Third-party pictures in `assets/`, if any — they belong to their owners.

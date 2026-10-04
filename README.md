@@ -16,6 +16,11 @@ a tone curve and a dithering style with the buttons, and every shot is printed.
   </tr>
 </table>
 
+For the **MK1-3290-V2 / AX3291A** camera, see the separate
+[MK1 variant](variants/mk1-3290-v2/README.md). It keeps the menu, SD-card photo
+saving and other functions for its young owners, with custom frames/graphics and
+three Penguin-derived dithering modes. Its firmware and USB scripts are different.
+
 ## Main changes compared to the stock firmware
 
 - **Better quality prints.** The original prints have blown-out highlights; the
@@ -285,6 +290,7 @@ accepted, and prints the image's SHA-256 (it must match the release).
 | `penguins/` | *Random penguin* print pictures (one picture per print) |
 | `assets/` | Power-on/off splash screens (`assets/splash-screens/`), menu penguin, tone model, boot ROM image |
 | `docs/` | How it works, stock firmware reference, recovery, photos (`docs/images/`) |
+| `variants/mk1-3290-v2/` | AX3291A variant: complete handoff, artwork, reference dump, builders and USB tools |
 
 See [docs/HOW-IT-WORKS.md](docs/HOW-IT-WORKS.md) for the technical design, and
 [docs/STOCK-FIRMWARE.md](docs/STOCK-FIRMWARE.md) for the reverse-engineered stock

@@ -1,0 +1,36 @@
+{
+  "installed": true,
+  "restart_verified": false,
+  "USB_without_SD_verified": false,
+  "candidate": "historical private build_04 (not distributed)",
+  "candidate_sha256": "21d7cd67c810c993d82e11b452d3d864d0202e45a0889e0bcfa8e581dce0d1b2",
+  "installed_sha256": "6a3e3218d5844d5e60972a6e1e6ef08fb5aec947b7a3b7b0c5ec60d03619a811",
+  "sectors_written": 11,
+  "boot_preserved": true,
+  "settings_preserved": true,
+  "resources_preserved": true,
+  "original_information_bar_preserved": true,
+  "screen_label_rows": [
+    32,
+    63
+  ],
+  "source_upload_seconds": 4.954215269011911,
+  "program_seconds": 0.13929582783021033,
+  "transport": "Verified 512-byte single-packet uploads; resident SPI helpers; no SPI timing changes.",
+  "evidence": [
+    "analysis/effects_install_payload_01",
+    "analysis/effects_install_activate_01"
+  ],
+  "paired_backup_sha256": "34bf5343f31ae8414b9f5cc7c44df2e9736e3640c47c7781228ff0bf5ad074ff",
+  "label_style": "White palette index 251; transparent background index 249",
+  "latest_label_update": {
+    "evidence": "analysis/label_update_04_01",
+    "sectors_written": 1,
+    "all_other_bytes_preserved": true,
+    "elapsed_seconds": 104.408
+  },
+  "public_candidate": "analysis/build_04/image.bin",
+  "public_candidate_sha256": "c50df9e03f36f38ba19f4f909f4eb350ab0ce913dbc23ff52ca96b32bd2216c3",
+  "public_artwork_blurred": true,
+  "public_image_hardware_installed": false
+}
